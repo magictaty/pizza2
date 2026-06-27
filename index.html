@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Библиотека ИИ-промптов — Вспомогательные материалы</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --neon: #00D4FF;
+    --neon-light: #E0F9FF;
+    --neon-mid: #B3F0FF;
+    --neon-glow: rgba(0, 212, 255, 0.18);
+    --black: #111111;
+    --gray: #444444;
+    --gray-light: #888888;
+    --white: #FFFFFF;
+    --bg: #F7FCFF;
+    --border: #CCF3FF;
+    --orange: #FF8C00;
+    --orange-light: #FFF4E0;
+    --orange-border: #FFD599;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--black);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--white);
+    border-bottom: 3px solid var(--neon);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--neon);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 800;
+    color: var(--black);
+    max-width: 760px;
+    margin: 0 auto 8px;
+    line-height: 1.25;
+  }
+  .header h1 span { color: var(--neon); }
+
+  /* ИНСТРУКЦИЯ */
+  .instruction {
+    background: var(--neon-glow);
+    border: 1.5px solid var(--neon);
+    border-radius: 14px;
+    padding: 20px 28px;
+    max-width: 820px;
+    margin: 28px auto 0;
+    text-align: left;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .instruction .icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .instruction p { font-size: 15px; color: var(--black); }
+
+  /* NICHE INPUT BLOCK */
+  .niche-block {
+    background: var(--white);
+    border: 2px solid var(--neon);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    box-shadow: 0 4px 24px rgba(0,212,255,0.10);
+  }
+  .niche-block h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+  .niche-block p {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+  .niche-input-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .niche-input {
+    flex: 1;
+    min-width: 200px;
+    border: 1.5px solid var(--neon-mid);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    background: var(--neon-light);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .niche-input:focus { border-color: var(--neon); }
+  .niche-input::placeholder { color: var(--gray-light); }
+  .apply-btn {
+    background: var(--neon);
+    color: var(--black);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .apply-btn:hover { background: #00BFEE; transform: translateY(-1px); }
+  .apply-btn.applied { background: #00C853; color: white; }
+
+  .niche-hint {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--gray-light);
+  }
+  .niche-hint strong { color: var(--neon); }
+
+  /* MAIN CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--neon);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  /* PROMPT CARD */
+  .prompt-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .prompt-card:hover {
+    box-shadow: 0 4px 24px rgba(0, 212, 255, 0.13);
+  }
+
+  .prompt-header {
+    background: var(--white);
+    border-bottom: 1.5px solid var(--border);
+    padding: 20px 28px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .prompt-num {
+    background: var(--neon);
+    color: var(--black);
+    font-size: 13px;
+    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .prompt-header-text h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 3px;
+  }
+  .prompt-header-text p {
+    font-size: 13px;
+    color: var(--gray-light);
+    font-style: italic;
+  }
+
+  .prompt-body { padding: 24px 28px; }
+
+  .prompt-text {
+    background: var(--neon-light);
+    border: 1.5px solid var(--neon-mid);
+    border-radius: 10px;
+    padding: 20px 22px;
+    font-size: 14px;
+    color: var(--black);
+    white-space: pre-wrap;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .niche-placeholder {
+    background: var(--neon);
+    color: var(--black);
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 13px;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--neon);
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .copy-btn:hover { background: #00BFEE; transform: translateY(-1px); }
+  .copy-btn.copied { background: #00C853; color: white; }
+
+  /* VIDEO REFERENCE BLOCK */
+  .video-block {
+    background: var(--orange-light);
+    border: 1.5px solid var(--orange-border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .video-block .vicon { font-size: 28px; flex-shrink: 0; }
+  .video-block h4 { font-size: 16px; font-weight: 800; color: var(--black); margin-bottom: 6px; }
+  .video-block p { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+  /* NAILA PROMPTS */
+  .naila-card {
+    background: var(--white);
+    border: 1.5px solid var(--orange-border);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .naila-header {
+    background: var(--orange-light);
+    border-bottom: 1.5px solid var(--orange-border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .naila-num {
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .naila-header h4 { font-size: 15px; font-weight: 700; color: var(--black); }
+  .naila-body { padding: 20px 24px; }
+  .naila-text {
+    background: #FFFAF4;
+    border: 1.5px solid var(--orange-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 13.5px;
+    color: var(--black);
+    white-space: pre-wrap;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    font-family: 'Inter', sans-serif;
+  }
+  .copy-btn-orange {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .copy-btn-orange:hover { background: #E07A00; transform: translateY(-1px); }
+  .copy-btn-orange.copied { background: #00C853; }
+
+  /* PART DIVIDER */
+  .part-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0 32px;
+  }
+  .part-divider::before, .part-divider::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--border);
+  }
+  .part-divider-label {
+    background: var(--neon);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .part-divider-label.orange {
+    background: var(--orange);
+    color: white;
+  }
+
+  /* ADAPTATION BLOCK */
+  .var-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+  }
+  .var-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .var-num {
+    background: var(--neon-light);
+    border: 1.5px solid var(--neon);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 800;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .var-header h4 { font-size: 16px; font-weight: 700; color: var(--black); }
+
+  .example-block {
+    background: var(--bg);
+    border-left: 3px solid var(--neon);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 13.5px;
+    color: var(--black);
+    line-height: 1.65;
+  }
+  .example-block .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-light);
+    margin-bottom: 4px;
+  }
+  .example-block .was { color: var(--gray-light); margin-bottom: 10px; }
+  .example-block .replace { color: #007AA8; font-weight: 500; }
+
+  .tip-list { list-style: none; padding: 0; margin-top: 10px; }
+  .tip-list li {
+    padding: 5px 0 5px 22px;
+    position: relative;
+    font-size: 14px;
+    color: var(--black);
+    line-height: 1.6;
+  }
+  .tip-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--neon);
+    font-weight: 700;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--black);
+    color: var(--neon);
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .footer span { color: #888; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">📑 Вспомогательные материалы к уроку</div>
+  <h1>Библиотека ИИ-промптов<br>для <span>анализа ЦА</span> и сборки <span>Базы Болей</span></h1>
+  <div class="instruction">
+    <div class="icon">💡</div>
+    <p><strong>Как пользоваться:</strong> Введите вашу нишу в поле ниже — промпты автоматически подставят её. Затем скопируйте нужный промпт и отправьте в <strong>ChatGPT, DeepSeek, Gemini</strong> или <strong>Claude</strong>.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- NICHE INPUT -->
+  <div class="niche-block">
+    <h3>⚡ Шаг 1: Введите вашу нишу — промпты адаптируются автоматически</h3>
+    <p>Например: нутрициолог, фитнес-тренер, дизайнер интерьеров, онлайн-школа английского, бренд одежды…</p>
+    <div class="niche-input-row">
+      <input class="niche-input" id="nicheInput" type="text" placeholder="Введите вашу нишу / продукт / услугу" />
+      <button class="apply-btn" id="applyBtn" onclick="applyNiche()">✨ Применить</button>
+    </div>
+    <div class="niche-hint" id="nicheHint">Пока ниша не введена, в промптах отображается <strong>[ВАША НИША]</strong></div>
+  </div>
+
+  <div class="section-title">С чего начать — подготовка к кастдеву</div>
+
+  <!-- CASTDEV PREP -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num" style="background:var(--black);color:var(--neon);font-size:18px;">★</div>
+      <div class="prompt-header-text">
+        <h3>Создай сценарий кастдев-интервью под мою нишу</h3>
+        <p>Используйте этот промпт первым — до того, как идти к клиентам. ИИ составит готовый список вопросов</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p0">Ты — опытный продуктовый маркетолог, специалист по кастдев-интервью (Customer Development). Твоя задача — помочь эксперту в нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span> провести глубинное интервью с потенциальным клиентом.
+
+Составь полный сценарий кастдев-интервью, который займет 20-30 минут. Включи:
+
+1. Вступление (2-3 фразы для установления контакта и объяснения цели разговора)
+
+2. Блок «Жизнь и контекст» (3-4 вопроса): кто этот человек, его ситуация, распорядок дня — без привязки к продукту.
+
+3. Блок «Проблема и боль» (4-5 вопросов): что его беспокоит в теме <span class="niche-placeholder niche-tag">[ВАША НИША]</span>, как давно, что уже пробовал, почему не сработало.
+
+4. Блок «Опыт с экспертами и решениями» (3-4 вопроса): к кому обращался раньше, что понравилось / разочаровало, по каким критериям выбирал.
+
+5. Блок «Мотивация и триггеры» (3-4 вопроса): что должно измениться в жизни, если проблема решится? Что мешает действовать прямо сейчас?
+
+6. Завершение (1-2 фразы для благодарности и следующего шага)
+
+Важно: все вопросы должны быть открытыми (без вариантов «да/нет»), без упоминания твоего продукта, без давления. Цель — услышать человека, а не продать.</div>
+      <button class="copy-btn" onclick="copyPrompt('p0', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px;">Часть 1 — Универсальные промпты (под вашу нишу)</div>
+
+  <!-- PROMPT 1 -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num">1</div>
+      <div class="prompt-header-text">
+        <h3>Разбор живого кастдев-интервью</h3>
+        <p>Убирает «воду» из расшифровки и вытаскивает скрытые смыслы</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p1">Ты — опытный маркетолог и эксперт в сфере <span class="niche-placeholder niche-tag">[ВАША НИША]</span>. Ниже представлена текстовая расшифровка кастдев-интервью с потенциальным клиентом. Проанализируй текст и вытащи из него чистые факты, боли и скрытые триггеры для продажи продуктов и услуг в нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span>. Сформируй отчет:
+
+1. Психоэмоциональный и физический портрет: Что больше всего беспокоит или мешает этому человеку?
+
+2. Скрытые запросы (JTBD): На какую "работу" (глубинную цель) он хочет нанять специалиста на самом деле?
+
+3. Отношение к теме и экспертам: Чего боится? Какой прошлый опыт уже есть? Что разочаровывало?
+
+4. Критерии выбора эксперта: На что обращает внимание при выборе специалиста? Что рождает доверие?
+
+5. Страхи и барьеры к покупке: Что мешает принять решение прямо сейчас?
+
+Текст интервью для анализа:
+[ВСТАВИТЬ СЮДА ТЕКСТ ТРАНСКРИБАЦИИ ВАШЕГО ИНТЕРВЬЮ]</div>
+      <button class="copy-btn" onclick="copyPrompt('p1', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <!-- PROMPT 2 -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num">2</div>
+      <div class="prompt-header-text">
+        <h3>Глобальный сбор болей из интернета</h3>
+        <p>Для Perplexity Free — ИИ сам найдёт площадки с реальными жалобами вашей аудитории</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p2">Найди в интернете (форумы, отзовики, Telegram-каналы, тематические сообщества) реальные отзывы, обсуждения и жалобы людей, которые являются целевой аудиторией в нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span>. Опиши типичный портрет этой аудитории: возраст, ситуация, главные боли. Выдели 5 ключевых болей (с цитатами из реальных обсуждений, если есть) и прикрепи прямые ссылки на веб-страницы с этими обсуждениями.</div>
+      <button class="copy-btn" onclick="copyPrompt('p2', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <!-- PROMPT 3 -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num">3</div>
+      <div class="prompt-header-text">
+        <h3>Глубокий маркетинговый разбор по методологии JTBD</h3>
+        <p>Для DeepSeek / ChatGPT — раскладывает мотивы аудитории по полочкам</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p3">Используя маркетинговую методологию JTBD (Jobs To Be Done), проанализируй целевую аудиторию для эксперта / бизнеса в нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span>.
+
+Ответь на вопросы:
+
+1. На какую глубинную "работу" (Job) нанимают специалиста в этой нише? Что человек хочет изменить в своей жизни на самом деле?
+
+2. Как экологично связать боли и страхи аудитории с продуктом или услугой так, чтобы это выглядело как авторитетная рекомендация эксперта, а не прямая продажа?
+
+3. Предложи 3 неочевидных сегмента ЦА в этой нише (помимо самого очевидного), которым критически важно решить эту проблему, и распиши их боли.</div>
+      <button class="copy-btn" onclick="copyPrompt('p3', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <!-- PROMPT 4 -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num">4</div>
+      <div class="prompt-header-text">
+        <h3>Перекрестный анализ: Кастдевы VS Интернет</h3>
+        <p>Сравнивает живое интервью с трендами сети, подсвечивает слепые зоны</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p4">Перед тобой два блока маркетинговых данных по нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span>.
+
+Блок 1 — это анализ реального интервью с клиентом.
+
+Блок 2 — это общие тренды и боли аудитории из интернета, собранные ИИ.
+
+Проведи перекрестный анализ и сделай жесткую сверку. Выдай результат в виде трех списков:
+
+1. Железобетонные гипотезы (100% совпадение): Какие боли и триггеры подтвердились и в живой беседе, и в сети? (Это основа позиционирования).
+
+2. Слепая зона ИИ: Какие тонкие психологические страхи высказал живой человек на кастдеве, о которых интернет-статьи обычно молчат?
+
+3. Слепая зона кастдевов: Какие неочевидные тренды или проблемы нашел ИИ в сети, о которых я забыл спросить человека на интервью?
+
+Данные Блока 1 (Кастдев): [Вставить результат работы Промпта №1]
+
+Данные Блока 2 (Маркетинг из Сети): [Вставить результаты из Perplexity/DeepSeek]</div>
+      <button class="copy-btn" onclick="copyPrompt('p4', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <!-- PROMPT 5 -->
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-num">5</div>
+      <div class="prompt-header-text">
+        <h3>Финальная сборка Базы Болей (в таблицу)</h3>
+        <p>Превращает все данные в готовую структуру для контент-плана и офферов</p>
+      </div>
+    </div>
+    <div class="prompt-body">
+      <div class="prompt-text" id="p5">Сведи все подтвержденные данные из предыдущих шагов по нише <span class="niche-placeholder niche-tag">[ВАША НИША]</span> в единую структурированную базу болей. Оформи её в виде красивой Markdown-таблицы со следующими колонками:
+
+1. Сегмент ЦА — конкретный портрет (например: Мама в декрете, Начинающий предприниматель).
+
+2. Симптом / Проявление боли — что происходит физически, эмоционально или в бизнесе.
+
+3. Дословная мысль в голове клиента — живые фразы и цитаты из кастдева.
+
+4. Истинный триггер к покупке — что заставит его заплатить?
+
+5. Решение / Готовый оффер — как упаковать это в продающий пост или на сайт.
+
+Пиши емко, без размытых фраз и абстракций. Только то, что можно сразу внедрять в контент-план.</div>
+      <button class="copy-btn" onclick="copyPrompt('p5', this)">📋 Скопировать промпт</button>
+    </div>
+  </div>
+
+  <!-- VIDEO REFERENCE -->
+  <div class="part-divider">
+    <div class="part-divider-label orange">Разбор в видео — промпты Наили</div>
+  </div>
+
+  <div class="video-block">
+    <div class="vicon">🎬</div>
+    <div>
+      <h4>В видео-уроке разбор шёл именно по этим промптам</h4>
+      <p>Наиля работала в нише нутрициологии и оздоровления. Ниже — её оригинальные промпты, заточенные под её продукт и аудиторию. Используйте их как наглядный пример того, как выглядит готовый промпт под конкретную нишу.</p>
+    </div>
+  </div>
+
+  <!-- NAILA P1 -->
+  <div class="naila-card">
+    <div class="naila-header">
+      <div class="naila-num">1</div>
+      <h4>Разбор кастдев-интервью — версия Наили (нутрициология)</h4>
+    </div>
+    <div class="naila-body">
+      <div class="naila-text" id="n1">Ты — превентивный нутрициолог, эксперт по интегративному здоровью и маркетолог. Ниже представлена текстовая расшифровка кастдев-интервью с потенциальным клиентом. Проанализируй текст и вытащи из него чистые факты, боли и скрытые триггеры для продажи программ сопровождения здоровья и продуктов нутрицевтики. Сформируй отчет:
+
+1. Психоэмоциональный и физический портрет: Что больше всего отнимает энергию у человека?
+
+2. Скрытые запросы (JTBD): На какую "работу" (глубинную цель) он хочет нанять специалиста на самом деле?
+
+3. Отношение к медицине, врачам и БАДам: Чего боится в классических больницах? Как относится к витаминам и добавкам?
+
+4. Критерии выбора эксперта: На что обращает внимание при выборе нутрициолога? Что рождает доверие?
+
+5. Страхи и барьеры к покупке: Чего боится на этапе тест-драйва или первой недорогой услуги за 5000 рублей?
+
+Текст интервью для анализа:
+[ВСТАВИТЬ СЮДА ТЕКСТ ТРАНСКРИБАЦИИ ВАШЕГО ИНТЕРВЬЮ]</div>
+      <button class="copy-btn-orange" onclick="copyNaila('n1', this)">📋 Скопировать</button>
+    </div>
+  </div>
+
+  <!-- NAILA P2 -->
+  <div class="naila-card">
+    <div class="naila-header">
+      <div class="naila-num">2</div>
+      <h4>Сбор болей из интернета — версия Наили</h4>
+    </div>
+    <div class="naila-body">
+      <div class="naila-text" id="n2">Найди на площадках babyblog, woman.ru, vc.ru и в Telegram-каналах реальные отзывы, обсуждения и жалобы активных женщин-предпринимателей и мам в возрасте 35-50 лет на тему хронической усталости, выгорания, нехватки энергии и безуспешных попыток самостоятельно пить БАДы. Выдели 5 ключевых болей (с цитатами, если есть) и прикрепи прямые ссылки на веб-страницы с этими обсуждениями.</div>
+      <button class="copy-btn-orange" onclick="copyNaila('n2', this)">📋 Скопировать</button>
+    </div>
+  </div>
+
+  <!-- NAILA P3 -->
+  <div class="naila-card">
+    <div class="naila-header">
+      <div class="naila-num">3</div>
+      <h4>JTBD-разбор — версия Наили</h4>
+    </div>
+    <div class="naila-body">
+      <div class="naila-text" id="n3">Используя маркетинговую методологию JTBD (Jobs To Be Done), проанализируй целевую аудиторию для врача-физиотерапевта и нутрициолога, которая продвигает концепцию active-age и системного оздоровления через экосистему AUstore (AUNIT GROUP).
+
+Ответь на вопросы:
+
+1. На какую глубинную "работу" (Job) нанимают нутрициолога уставшие, выгоревшие предприниматели, которые постоянно загоняют сами себя?
+
+2. Как экологично связать их боли (нехватка времени, хаотичное питание, страх навязчивого сетевого маркетинга) с продуктовой линейкой AUstore так, чтобы это выглядело как авторитетное назначение эксперта, а не прямая продажа?
+
+3. Предложи 3 неочевидных сегмента ЦА (помимо бизнес-вумен), которым критически важно восстановить энергию, и распиши их боли.</div>
+      <button class="copy-btn-orange" onclick="copyNaila('n3', this)">📋 Скопировать</button>
+    </div>
+  </div>
+
+  <!-- NAILA P4 -->
+  <div class="naila-card">
+    <div class="naila-header">
+      <div class="naila-num">4</div>
+      <h4>Перекрестный анализ — версия Наили</h4>
+    </div>
+    <div class="naila-body">
+      <div class="naila-text" id="n4">Перед тобой два блока маркетинговых данных.
+
+Блок 1 — это анализ реального интервью с клиентом.
+
+Блок 2 — это общие тренды и боли уставших людей из интернета, собранные ИИ.
+
+Проведи перекрестный анализ и сделай жесткую сверку. Выдай результат в виде трех списков:
+
+1. Железобетонные гипотезы (100% совпадение): Какие боли и триггеры подтвердились и в живой беседе, и в сети? (Это основа нашего позиционирования).
+
+2. Слепая зона ИИ: Какие тонкие психологические страхи высказал живой человек на кастдеве, о которых интернет-статьи обычно молчат? (Например, страх навязчивых продаж).
+
+3. Слепая зона кастдевов: Какие неочевидные тренды или проблемы со здоровьем нашел ИИ в сети, о которых я забыл спросить человека на интервью?
+
+Данные Блока 1 (Кастдев): [Вставить результат работы Промпта №1]
+
+Данные Блока 2 (Маркетинг из Сети): [Вставить результаты из Perplexity/DeepSeek]</div>
+      <button class="copy-btn-orange" onclick="copyNaila('n4', this)">📋 Скопировать</button>
+    </div>
+  </div>
+
+  <!-- NAILA P5 -->
+  <div class="naila-card">
+    <div class="naila-header">
+      <div class="naila-num">5</div>
+      <h4>Финальная сборка Базы Болей — версия Наили</h4>
+    </div>
+    <div class="naila-body">
+      <div class="naila-text" id="n5">Сведи все подтвержденные данные из предыдущих шагов в единую структурированную b2c-базу болей. Оформи её в виде красивой Markdown-таблицы со следующими колонками:
+
+1. Сегмент ЦА (например: Уставшая бизнес-мама, Выгоревший топ-менеджер).
+
+2. Симптом / Проявление боли (Что происходит физически или эмоционально).
+
+3. Дословная мысль в голове клиента (Используй живые фразы и цитаты из кастдева).
+
+4. Истинный триггер к покупке (Что заставит её заплатить?).
+
+5. Решение / Готовый оффер для эксперта (Как упаковать это в продающий пост или на сайт).
+
+Пиши емко, без размытых фраз и абстракций. Только то, что можно сразу внедрять в контент-план.</div>
+      <button class="copy-btn-orange" onclick="copyNaila('n5', this)">📋 Скопировать</button>
+    </div>
+  </div>
+
+  <!-- ADAPTATION BLOCK -->
+  <div class="part-divider">
+    <div class="part-divider-label">Как адаптировать промпты под себя</div>
+  </div>
+
+  <p style="font-size:15px;color:var(--gray);margin-bottom:28px;">Дорогие ученики школы ПИИЦА, чтобы промпты сработали лично на ваш бизнес (будь то бьюти-сфера, IT, коучинг, производство одежды или онлайн-школа), нужно изменить <strong>4 ключевые переменные:</strong></p>
+
+  <div class="var-card">
+    <div class="var-header">
+      <div class="var-num">1</div>
+      <h4>Роль нейросети (Контекст)</h4>
+    </div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">В самом начале промпта всегда задавайте ИИ профессию и жёсткий бэкграунд.</p>
+    <div class="example-block">
+      <div class="label">Было у Наили</div>
+      <div class="was">Ты — превентивный нутрициолог и b2c-маркетолог.</div>
+      <div class="label" style="margin-top:10px;">Как заменить под себя</div>
+      <div class="replace">Ты — senior-маркетолог в сфере [дизайна интерьеров / b2b-продаж мерча / фитнеса].</div>
+    </div>
+  </div>
+
+  <div class="var-card">
+    <div class="var-header">
+      <div class="var-num">2</div>
+      <h4>Описание продукта и компании</h4>
+    </div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Замените проект Наили на свой собственный бренд и продукт. Чётко пропишите ваше уникальное позиционирование (стиль, формат, ценности).</p>
+    <div class="example-block">
+      <div class="label">Было у Наили</div>
+      <div class="was">...программа нутрициолога и линейка продуктов AUstore от AUNIT GROUP.</div>
+      <div class="label" style="margin-top:10px;">Как заменить под себя</div>
+      <div class="replace">...бренд премиального корпоративного мерча / услуги фитнес-тренера / онлайн-курс по дизайну.</div>
+    </div>
+  </div>
+
+  <div class="var-card">
+    <div class="var-header">
+      <div class="var-num">3</div>
+      <h4>Площадки для поиска аудитории (для Perplexity)</h4>
+    </div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Укажите ИИ те сайты, где сидит именно ваш клиент, или делегируйте поиск самой нейросети.</p>
+    <ul class="tip-list">
+      <li><strong>b2c (мамы, здоровье, психология):</strong> babyblog, woman.ru, irecommend, otzovik</li>
+      <li><strong>b2b, IT, маркетинг, дизайн:</strong> vc.ru, habr.com, Пикабу, тематические Telegram-каналы</li>
+    </ul>
+  </div>
+
+  <div class="var-card">
+    <div class="var-header">
+      <div class="var-num">4</div>
+      <h4>Критерии сегментации ЦА</h4>
+    </div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Чётко ограничьте ИИ рамками возраста, профессии или достатка вашей аудитории, чтобы он не собирал жалобы «всего интернета сразу».</p>
+    <div class="example-block">
+      <div class="label">Пример</div>
+      <div class="replace">...активные женщины-предприниматели и мамы в возрасте 35-50 лет с доходом выше среднего.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Сохраняйте этот гайд, тестируйте промпты и делитесь скриншотами ваших готовых ИИ-таблиц в чате <strong>Т-Клуба!</strong> 🚀<br>
+  <span style="font-size:12px;margin-top:6px;display:block;">Школа ПИИЦА · Вспомогательные материалы к уроку</span>
+</div>
+
+<script>
+const DEFAULT = '[ВАША НИША]';
+let currentNiche = DEFAULT;
+
+function applyNiche() {
+  const val = document.getElementById('nicheInput').value.trim();
+  currentNiche = val || DEFAULT;
+
+  // Update all niche-tag spans
+  document.querySelectorAll('.niche-tag').forEach(el => {
+    el.textContent = currentNiche;
+  });
+
+  const hint = document.getElementById('nicheHint');
+  const btn = document.getElementById('applyBtn');
+  if (val) {
+    hint.innerHTML = `✅ Промпты настроены под: <strong style="color:var(--neon)">${val}</strong>`;
+    btn.textContent = '✅ Применено';
+    btn.classList.add('applied');
+    setTimeout(() => {
+      btn.textContent = '✨ Применить';
+      btn.classList.remove('applied');
+    }, 2000);
+  } else {
+    hint.innerHTML = `Пока ниша не введена, в промптах отображается <strong>[ВАША НИША]</strong>`;
+  }
+}
+
+document.getElementById('nicheInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') applyNiche();
+});
+
+function getPromptText(id) {
+  const el = document.getElementById(id);
+  // Clone to get text without HTML tags, but replace span content
+  const clone = el.cloneNode(true);
+  return clone.innerText || clone.textContent;
+}
+
+function copyPrompt(id, btn) {
+  const text = getPromptText(id);
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Скопировано!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Скопировать промпт';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copyNaila(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Скопировано!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Скопировать';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
